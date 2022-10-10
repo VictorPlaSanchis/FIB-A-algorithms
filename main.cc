@@ -181,6 +181,39 @@ void executeProgram() {
 
 }
 
+void WriteFile(){
+    fstream my_file;
+    string nameFile;
+    switch(EstructuraDatosEnUso) {
+        case ED::ED_SORTED_VECTOR:
+            nameFile = "./Ejemplos/Vector/VectorN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            break;
+        case ED::ED_TERNARY_SEARCH_TREE:
+            nameFile = "./Ejemplos/Trie/TireN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            break;
+        case ED::ED_BLOOM_FILTER:
+            nameFile = "./Ejemplos/Blom/BlomN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            break;
+        case ED::ED_DOUBLE_HASHING:
+            nameFile = "./Ejemplos/DHash/DhasN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            break;
+        default:
+            nameFile = "./Ejemplos/Vector/VectorN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            break;
+    }
+    cout << nameFile << endl;
+    my_file.open(nameFile, ios::out);
+    if (!my_file) {
+        cout << "File not created!";
+    }
+    else {
+        for(string a : wordsFound){
+            my_file << a << endl;
+        }
+        my_file.close();
+    }
+}
+
 int main(int argc, char *argv[]){
 
     if(argc > 4) throw invalid_argument("Demasiados argumentos de programa...");
@@ -189,8 +222,9 @@ int main(int argc, char *argv[]){
     if(argc > 1) FICHERO_ENTRADA = argv[1];
 
     initializeProgram();
-    EstructuraDatosEnUso = ED::ED_TERNARY_SEARCH_TREE;
+    EstructuraDatosEnUso = ED::ED_SORTED_VECTOR;
     executeProgram();
+    WriteFile();
 
     return 0;
 
