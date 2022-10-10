@@ -3,7 +3,9 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <set>
 #include <time.h>
+#include <chrono>
 #include "diccSortedVector.cc"
 #include "diccTrie.cc"
 #include "diccBloomFilter.cc"
@@ -12,6 +14,7 @@ using namespace std;
 
 string FICHERO_ENTRADA;
 unsigned int N = 8;
+uint64_t SEED = -1;
 unsigned int maxWordLength = 10;
 const unsigned int ch_MAX = 26;
 
@@ -36,9 +39,11 @@ char alpha[ch_MAX] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g',
 
 vector <vector<char> > superSopa;
 vector <vector<bool> > visited;
-vector <string> wordsFound;
+set <string> wordsFound;
 
 void generateSopa(){
+    if(SEED == uint64_t(-1)) SEED = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
+    srand(SEED);    
     for(int i=0; i<N; ++i){
         superSopa.push_back(vector<char>());
         visited.push_back(vector<bool>());
@@ -85,13 +90,13 @@ void backtracking(string mot, int i, int j){
             sr = obj_diccDHashing.findWord(mot + superSopa[i][j]);
             break;
         default:
-            sr = obj_diccSortedVector.findWord(mot);
+            sr = obj_diccSortedVector.findWord(mot);   
             break;
     }
 
     switch(EstructuraDades::evalSearchResult(sr)) {
         case BacktrackingAction::ADD_WORD_AND_SEARCH:
-            wordsFound.push_back(mot + superSopa[i][j]);
+            wordsFound.insert(mot + superSopa[i][j]);
         case BacktrackingAction::CONTINUE_SEARCHING:
             visited[i][j] = true;
             backtracking(mot + superSopa[i][j], i+1, j);
@@ -109,14 +114,14 @@ void backtracking(string mot, int i, int j){
         default:
             return;
     }
-
+    
 }
 
 void SearchSoup(bool debugPrints = true) {
-
+    
     if(debugPrints) printSopa();
-
-    wordsFound = vector<string>();
+    
+    wordsFound = set<string>();
     for(int i=0; i<N; ++i){
         for(int j=0; j<N; ++j){
             visited = vector<vector<bool> >(N, vector<bool>(N, 0));
@@ -128,18 +133,16 @@ void SearchSoup(bool debugPrints = true) {
     if(debugPrints) {
         cout << "Found " << wordsFound.size() << " words." << endl;
     }
-
+    
 }
 
 void initializeProgram() {
 
-    double initializeDuration = 0.0;
+    double initializeDuration = 0.0;  
 
     // Inicializacion del programa
 
     clock_t begin_initialization = clock();
-
-    wordsFound = vector<string>();
 
     string newWord;
     ifstream file(FICHERO_ENTRADA);
@@ -150,7 +153,7 @@ void initializeProgram() {
         file >> newWord;
         obj_diccSortedVector.addWord(newWord);
         obj_diccTrie.addWord(newWord);
-        //obj_diccDHashing.addWord(newWord);
+        obj_diccDHashing.addWord(newWord);
     }
     //obj_diccBloomFilter = diccBloomFilter(obj_diccSortedVector.data());
 
@@ -164,7 +167,7 @@ void initializeProgram() {
 }
 
 void executeProgram() {
-
+  
     double executionDuration = 0.0;
 
     // Ejecucion del programa
@@ -172,11 +175,11 @@ void executeProgram() {
     clock_t begin_execution = clock();
 
     SearchSoup();
-
+ 
     clock_t end_execution = clock();
-
+ 
     executionDuration = (double)(end_execution - begin_execution) / CLOCKS_PER_SEC;
-
+ 
     cout << "Time execution: " << executionDuration << " seconds." << endl;
 
 }
@@ -192,16 +195,15 @@ void WriteFile(){
             nameFile = "./Ejemplos/Trie/TrieN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         case ED::ED_BLOOM_FILTER:
-            nameFile = "./Ejemplos/Bloom/BloomN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            nameFile = "./Ejemplos/Blom/BlomN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         case ED::ED_DOUBLE_HASHING:
-            nameFile = "./Ejemplos/DHash/DHashN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            nameFile = "./Ejemplos/DHash/DhasN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         default:
             nameFile = "./Ejemplos/Vector/VectorN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
     }
-    cout << nameFile << endl;
     my_file.open(nameFile, ios::out);
     if (!my_file) {
         cout << "File not created!";
@@ -216,13 +218,14 @@ void WriteFile(){
 
 int main(int argc, char *argv[]){
 
-    if(argc > 4) throw invalid_argument("Demasiados argumentos de programa...");
+    if(argc > 5) throw invalid_argument("Demasiados argumentos de programa...");
+    if(argc > 4) SEED = std::atoi(argv[4]);
     if(argc > 3) maxWordLength = std::atoi(argv[3]);
     if(argc > 2) N = std::atoi(argv[2]);
     if(argc > 1) FICHERO_ENTRADA = argv[1];
 
     initializeProgram();
-    EstructuraDatosEnUso = ED::ED_BLOOM_FILTER;
+    EstructuraDatosEnUso = ED::ED_TERNARY_SEARCH_TREE;
     executeProgram();
     WriteFile();
 

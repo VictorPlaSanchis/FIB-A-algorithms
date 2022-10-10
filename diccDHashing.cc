@@ -8,7 +8,7 @@
 #include "ED.cc"
 using namespace std;
 
-#define MAX_SIZE 100000
+#define MAX_SIZE 5000000
 #define MIN_SIZE 2
 #define NULL_ELEMENT "_NULL_ELEMENT_"
 #define DELETED_ELEMENT "_DELETED_ELEMENT_"
@@ -38,13 +38,7 @@ private:
     }
 
      int getValue(string word) {
-        int value = 0;
-        int i = 0;
-        for(char character : word) {
-            value += (int)(character) + 1;
-            i++;
-        }
-        return value;
+        return hash<string>{}(word);
     }
 
     int hash1(string word){
@@ -58,7 +52,6 @@ private:
 public:
 
     diccDHashing(int size = MAX_SIZE){
-
         if(size > MAX_SIZE) throw invalid_argument("La tabla no puede ser mas grande que 10000000000...");
         if(size < MIN_SIZE) throw invalid_argument("La tabla tiene que ser minimamente de 2 posiciones...");
 
