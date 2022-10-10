@@ -8,6 +8,6 @@ make:
 	@echo "*  param1: INPUT FILE, example: ./file.txt                                  *"
 	@echo "*  param2: N (length of soup), example: 10                                  *"
 	@echo "*  param3: MAX WORD LENGTH, example: 10                                     *"
-	@echo "*  param4: SEED (for generating the soup), example: 1                       *"
+	@echo "*  param4: SEED (for generating the soup), example: 0                       *"
 	@echo "*                                                                           *"
 	@echo "*****************************************************************************"

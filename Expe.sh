@@ -1,11 +1,14 @@
 #!/bin/bash
-sizeN=(10 20 50 100 150 200 300 400 500)
-sizeM=(5 10 15 20 25 30 35 40 45 50)
+Name=$1
+sizeN=(2 3 4 5 6 7 8 9 10)
+sizeM=(2 3 4 5 6 7 8 9 10)
+SEED=0
 
 for i in "${sizeN[@]}";
 do
 	for j in "${sizeM[@]}";
 	do
-		./program.exe EjemploDic.txt $i $j > ./Ejemplos/Vector/VectorN"${i}"M"${j}".txt
+		echo "$Name"N"${i}"M"${j}"
+		./program.exe EjemploDic.txt $i $j $SEED > ./Ejemplos/$Name/"$Name"N"${i}"M"${j}".txt
 	done
 done
