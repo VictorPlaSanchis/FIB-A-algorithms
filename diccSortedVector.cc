@@ -5,7 +5,9 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <string.h>
 #include "ED.cc"
+
 
 using namespace std;
 
@@ -61,24 +63,24 @@ private:
         -1 si la palabra no esta en el diccionario
         >=0 si la palabra esta en el diccionario
     */
-    int FindDicctionary(int inf, int sup, string n){
+    SearchResult FindDicctionary(int inf, int sup, string n){
         //cout << "valores " << inf << " " << sup << " " << n << " " << endl; 
         if(inf > sup)
-            return -1;
+        return SearchResult::WORD_NOT_FOUND;
         else {
             int central;
             central = (inf + sup)/2;
-            int cpm = CompareStrings(n, Dictionary[central]);
+            int cpm = n.compare(Dictionary[central]);
             /*cout << "central " << central << endl; 
             cout << "comparar " << cpm << endl;
             cout << "palabra central " << Dictionary[central] << endl;  
             cout << "palabra inferior " << Dictionary[inf] << endl;  
-            cout << "palabra superior " << Dictionary[sup] << endl;*/  
+            cout << "palabra superior " << Dictionary[sup] << endl;*/
             if(cpm == 0){
-                return central;
+                return SearchResult::WORD_FOUND;
             }
             else{
-                if(cpm == 1)
+                if(cpm > 0)
                     return FindDicctionary(central+1,sup,n);
                 else
                     return FindDicctionary(inf,central-1,n);
@@ -114,12 +116,7 @@ public:
     }
 
     SearchResult findWord(string n){
-        for(int i=0;i < Dictionary.size(); ++i){
-            if(CompareStrings(n,Dictionary[i])){
-                return SearchResult::WORD_FOUND;
-            }
-        }
-        return SearchResult::WORD_NOT_FOUND;
+        return FindDicctionary(0,Dictionary.size()-1,n);
     }
 
     vector<string> data() {
