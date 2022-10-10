@@ -85,7 +85,7 @@ void backtracking(string mot, int i, int j){
             sr = obj_diccDHashing.findWord(mot + superSopa[i][j]);
             break;
         default:
-            sr = obj_diccSortedVector.findWord(mot);   
+            sr = obj_diccSortedVector.findWord(mot);
             break;
     }
 
@@ -109,13 +109,13 @@ void backtracking(string mot, int i, int j){
         default:
             return;
     }
-    
+
 }
 
 void SearchSoup(bool debugPrints = true) {
-    
+
     if(debugPrints) printSopa();
-    
+
     wordsFound = vector<string>();
     for(int i=0; i<N; ++i){
         for(int j=0; j<N; ++j){
@@ -128,12 +128,12 @@ void SearchSoup(bool debugPrints = true) {
     if(debugPrints) {
         cout << "Found " << wordsFound.size() << " words." << endl;
     }
-    
+
 }
 
 void initializeProgram() {
 
-    double initializeDuration = 0.0;  
+    double initializeDuration = 0.0;
 
     // Inicializacion del programa
 
@@ -164,7 +164,7 @@ void initializeProgram() {
 }
 
 void executeProgram() {
-  
+
     double executionDuration = 0.0;
 
     // Ejecucion del programa
@@ -172,11 +172,11 @@ void executeProgram() {
     clock_t begin_execution = clock();
 
     SearchSoup();
- 
+
     clock_t end_execution = clock();
- 
+
     executionDuration = (double)(end_execution - begin_execution) / CLOCKS_PER_SEC;
- 
+
     cout << "Time execution: " << executionDuration << " seconds." << endl;
 
 }
@@ -189,13 +189,13 @@ void WriteFile(){
             nameFile = "./Ejemplos/Vector/VectorN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         case ED::ED_TERNARY_SEARCH_TREE:
-            nameFile = "./Ejemplos/Trie/TireN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            nameFile = "./Ejemplos/Trie/TrieN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         case ED::ED_BLOOM_FILTER:
-            nameFile = "./Ejemplos/Blom/BlomN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            nameFile = "./Ejemplos/Bloom/BloomN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         case ED::ED_DOUBLE_HASHING:
-            nameFile = "./Ejemplos/DHash/DhasN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            nameFile = "./Ejemplos/DHash/DHashN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         default:
             nameFile = "./Ejemplos/Vector/VectorN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
@@ -222,7 +222,7 @@ int main(int argc, char *argv[]){
     if(argc > 1) FICHERO_ENTRADA = argv[1];
 
     initializeProgram();
-    EstructuraDatosEnUso = ED::ED_SORTED_VECTOR;
+    EstructuraDatosEnUso = ED::ED_BLOOM_FILTER;
     executeProgram();
     WriteFile();
 
