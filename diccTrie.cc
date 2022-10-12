@@ -32,6 +32,8 @@ public:
     }
 
     Node* addWord(string word){
+        if(word=="") return nullptr;
+        //cout << "Adding word:{" << word << "}" << endl;
         return addWord(&(this->root), &word[0]);
     }
 

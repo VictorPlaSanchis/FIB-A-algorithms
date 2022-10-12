@@ -71,7 +71,9 @@ public:
     }
 
     void addWord(string word){
-
+        if(word=="") return;
+        //cout << "Adding word:{" << word << "}" << endl;
+        
         if(findWord(word) == SearchResult::WORD_FOUND) {
             cout<<("ERROR : Palabra ya en la tabla!\n");
             return;

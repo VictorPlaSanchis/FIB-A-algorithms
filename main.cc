@@ -155,15 +155,11 @@ void initializeProgram() {
         obj_diccTrie.addWord(newWord);
         obj_diccDHashing.addWord(newWord);
     }
-    //obj_diccBloomFilter = diccBloomFilter(obj_diccSortedVector.data());
-
+    obj_diccBloomFilter = diccBloomFilter(obj_diccSortedVector.data());
     generateSopa();
 
     clock_t end_initialization = clock();
-
     cout << "Time initialization: " << initializeDuration << " seconds."  << endl;
-
-
 }
 
 void executeProgram() {
@@ -216,18 +212,41 @@ void WriteFile(){
     }
 }
 
+int selectedED = 0;
 int main(int argc, char *argv[]){
 
-    if(argc > 5) throw invalid_argument("Demasiados argumentos de programa...");
+    if(argc > 6) throw invalid_argument("Demasiados argumentos de programa...");
+    if(argc > 5) selectedED = std::atoi(argv[5]);
     if(argc > 4) SEED = std::atoi(argv[4]);
     if(argc > 3) maxWordLength = std::atoi(argv[3]);
     if(argc > 2) N = std::atoi(argv[2]);
     if(argc > 1) FICHERO_ENTRADA = argv[1];
 
     initializeProgram();
-    EstructuraDatosEnUso = ED::ED_TERNARY_SEARCH_TREE;
+    switch (selectedED)
+    {
+        case 0:
+            cout << "Using ED_SORTED_VECTOR" << endl;
+            EstructuraDatosEnUso = ED::ED_SORTED_VECTOR;
+            break;
+        case 1:
+            cout << "Using ED_TERNARY_SEARCH_TREE" << endl;
+            EstructuraDatosEnUso = ED::ED_TERNARY_SEARCH_TREE;
+            break;
+        case 2:
+            cout << "Using ED_BLOOM_FILTER" << endl;
+            EstructuraDatosEnUso = ED::ED_BLOOM_FILTER;
+            break;
+        case 3:
+            cout << "Using ED_DOUBLE_HASHING" << endl;
+            EstructuraDatosEnUso = ED::ED_DOUBLE_HASHING;
+            break;
+        default:
+            EstructuraDatosEnUso = ED::ED_SORTED_VECTOR;
+            break;
+    }
     executeProgram();
-    WriteFile();
+    //WriteFile();
 
     return 0;
 
