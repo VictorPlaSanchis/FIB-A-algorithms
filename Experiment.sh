@@ -21,7 +21,6 @@ do
 	else
 		Name="DHash"
 	fi
-	make
 	for i in "${sizeN[@]}";
 	do
 		for j in "${sizeM[@]}";
