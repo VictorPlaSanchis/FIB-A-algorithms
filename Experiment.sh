@@ -18,8 +18,12 @@ do
 	elif ((k == 2));
 		then
 			Name="Bloom"
+			sizeN=(2 3 4 5 6 7 8 9 10)
+			sizeM=(2 3 4 5 6 7 8 9 10)
 	else
 		Name="DHash"
+		sizeN=(2 3 4 5 6 7 8 9 10)
+		sizeM=(2 3 4 5 6 7 8 9 10)
 	fi
 	for i in "${sizeN[@]}";
 	do
