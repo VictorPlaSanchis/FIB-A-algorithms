@@ -95,8 +95,6 @@ public:
     }
 
     void addWord(string word) {
-        if(word=="") return;
-        //cout << "Adding word:{" << word << "}" << endl;
         Dictionary.push_back(word);
     }
 
