@@ -188,19 +188,19 @@ void WriteFile(){
     string nameFile;
     switch(EstructuraDatosEnUso) {
         case ED::ED_SORTED_VECTOR:
-            nameFile = "./Ejemplos/Vector1/VectorN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            nameFile = "./Experiments/Vector/VectorN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         case ED::ED_TERNARY_SEARCH_TREE:
-            nameFile = "./Ejemplos/Trie/TrieN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            nameFile = "./Experiments/Trie/TrieN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         case ED::ED_BLOOM_FILTER:
-            nameFile = "./Ejemplos/Blom/BlomN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            nameFile = "./Experiments/Bloom/BloomN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         case ED::ED_DOUBLE_HASHING:
-            nameFile = "./Ejemplos/DHash/DhasN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            nameFile = "./Experiments/DHash/DHashN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
         default:
-            nameFile = "./Ejemplos/Vector/VectorN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
+            nameFile = "./Experiments/Vector/VectorN" + to_string(N) + "M" + to_string(maxWordLength) +"Words.txt";
             break;
     }
     my_file.open(nameFile, ios::out);
@@ -249,7 +249,7 @@ int main(int argc, char *argv[]){
             break;
     }
     executeProgram();
-    //WriteFile();
+    WriteFile();
 
     return 0;
 
