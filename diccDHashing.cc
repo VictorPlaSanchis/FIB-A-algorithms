@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <math.h>
+#include <bitset>
 #include "ED.cc"
 using namespace std;
 
@@ -22,16 +23,17 @@ private:
     unsigned int biggestPrime;
 
     vector<string> hashTable;
-    vector<bool> primeNumbers;
+    bitset<MAX_SIZE> primeNumbers;
 
     void setPrimeNumbers(){
-        primeNumbers = vector<bool>(MAX_SIZE, true);
-        primeNumbers[0] = true;
-        primeNumbers[1] = true;
+        primeNumbers = bitset<MAX_SIZE>();
+        primeNumbers.set(0);
+        primeNumbers.set(1);
         for(int i = 2; i*i <= MAX_SIZE; i++) {
-            if(primeNumbers[i]) {
+            if(primeNumbers.test(i)) {
                 for(int j = i*i; j <= MAX_SIZE; j += i) {
-                    primeNumbers[j] = false;
+		    if(primeNumbers.test(j))
+                    	primeNumbers.flip(j);
                 }
             }
         }
@@ -61,7 +63,7 @@ public:
         this->keysAdded = 0;
 
         this->biggestPrime = size - 1;
-        while(!primeNumbers[biggestPrime]) {
+        while(!primeNumbers.test(biggestPrime)) {
             this->biggestPrime--;
         }
 
@@ -110,7 +112,9 @@ public:
         int initialPos = probe;
         bool firstItr = true;
 
+	int its = 0;
         while(true){
+	    if(its>MAX_SIZE) break;
             if(hashTable[probe] == NULL_ELEMENT)
                 break;
             else if(hashTable[probe] == word)
@@ -120,6 +124,7 @@ public:
             else
                 probe = ((probe + offset) % this->size);
             firstItr = SearchResult::WORD_NOT_FOUND;
+	    its++;
         }
         return SearchResult::WORD_NOT_FOUND;
     }
